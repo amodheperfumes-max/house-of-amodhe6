@@ -125,6 +125,13 @@ footer{padding:56px 18px;border-top:1px solid var(--line);font-size:11px;letter-
 @media(max-width:600px){
   section{padding:56px 16px}
   .product{grid-template-columns:1fr}
+
+  /* MOBILE HEADER: ONLY BUY + CART */
+  nav{justify-content:space-between;padding:12px 14px}
+  nav .nav-left{display:none}
+  nav a{font-size:9px;letter-spacing:.12em}
+  .nav-buy{padding:8px 14px;font-size:9px}
+}
   nav{justify-content:space-between;padding:12px 14px}
   nav .nav-left a{display:none}
   nav a{font-size:9px;letter-spacing:.12em}
@@ -212,7 +219,7 @@ footer{padding:56px 18px;border-top:1px solid var(--line);font-size:11px;letter-
         <div><span>Left</span><strong id="leftCount">13</strong></div>
       </div>
       <div class="bean-btn" id="buyBtn" onclick="addToCart()">Buy now</div>
-      <div class="bean-btn" id="prebookBtn" style="display:none" onclick="openPrebook()">Pre book next batch</div>
+      <a class="bean-btn" id="prebookBtn" style="display:none;text-decoration:none" href="mailto:amodheperfumes@gmail.com?subject=Pre-book%20request%20for%20Caf%C3%A9%20Ambr%C3%A9&body=Hello%20House%20of%20Amodhe,%0A%0AI%20would%20like%20to%20pre-book%20the%20next%20batch%20of%20Caf%C3%A9%20Ambr%C3%A9.%0A%0AName:%0ACity:%0APhone:%0A%0AThank%20you.">Pre book next batch</a>
     </div>
   </div>
 </section>
@@ -268,7 +275,7 @@ footer{padding:56px 18px;border-top:1px solid var(--line);font-size:11px;letter-
 
 <script>
 const MONTHLY_LIMIT = 20;
-let sold = 7;
+let sold = 20;
 const PRICE = 5999;
 const INTL_PRODUCT_USD = 72;
 const INTL_DELIVERY_USD = 48;
@@ -322,7 +329,7 @@ function scrollToBuy(){
   if(el){el.scrollIntoView({behavior:'smooth', block:'center'});}
 }
 
-function openPrebook(){alert('Pre-booking for next batch. Collect email here.')}
+// Pre-book handled via mailto link
 function checkoutIndia(){if(cart.length===0){alert('Your cart is empty');return}alert('India checkout initiated.')}
 function checkoutInternational(){if(cart.length===0){alert('Your cart is empty');return}alert('International checkout initiated.')}
 
