@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>House of Amodhe – Café Ambré</title>
+<meta name="description" content="House of Amodhe. Café Ambré. Limited monthly release of twenty bottles." />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --parchment:#12100E;
+  --parchment-soft:#1A1714;
+  --ink:#F2EFEA;
+  --ink-muted:#C2BBB2;
+  --accent:#8C6A3D;
+  --line:rgba(255,255,255,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,sans-serif;
+  background:var(--parchment);
+  color:var(--ink);
+  line-height:2;
+  overflow-x:hidden;
+}
+
+@keyframes ambient{0%{opacity:.7}50%{opacity:1}100%{opacity:.7}}
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background:radial-gradient(60% 40% at 50% 20%, rgba(154,116,66,.10), transparent 70%);
+  animation:ambient 18s ease-in-out infinite;
+  pointer-events:none;z-index:0;
+}
+body::after{
+  content:"";
+  position:fixed;inset:0;
+  background:radial-gradient(80% 60% at center, transparent 60%, rgba(0,0,0,.45) 100%);
+  pointer-events:none;z-index:0;
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;
+  display:flex;align-items:center;
+  justify-content:space-between; /* cart on right */
+  padding:14px 18px;
+  background:#0E0C0A;
+  border-bottom:1px solid rgba(140,106,61,.25);
+  backdrop-filter:blur(10px);
+  z-index:10;
+}
+
+nav .nav-left{display:flex;gap:16px;align-items:center}
+nav .nav-right{display:flex;gap:12px;align-items:center}
+nav a{
+  color:var(--ink-muted);
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:color .25s ease, text-shadow .25s ease;
+}
+.nav-buy{
+  padding:8px 16px;
+  border:1px solid rgba(140,106,61,.4);
+  border-radius:999px;
+  color:var(--ink);
+}
+.nav-buy:hover{background:var(--accent);color:#12100E;}
+nav a:hover{color:var(--accent)}
+
+section{
+  position:relative;
+  padding:72px 18px;
+  max-width:980px;
+  margin:0 auto;
+  z-index:1;
+}
+section:nth-of-type(even){background:var(--parchment-soft)}
+
+.section-divider{height:64px;display:flex;align-items:center;justify-content:center}
+.section-divider::before{
+  content:"";
+  width:180px;height:5px;
+  background:repeating-linear-gradient(90deg,#5C4528 0,#5C4528 16px,transparent 16px,transparent 28px);
+  border-radius:999px;opacity:.55;
+}
+
+.hero{min-height:65vh;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,9vw,86px);letter-spacing:.06em}
+.hero p{margin-top:18px;color:var(--ink-muted);max-width:720px}
+
+h2{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(30px,6vw,48px);text-align:center}
+h2::after{content:"";display:block;margin:16px auto 0;width:70px;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
+
+p{margin:28px auto 0;max-width:720px;color:var(--ink-muted);text-align:center}
+
+.product{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;justify-items:center;margin-top:36px}
+.product>div{grid-column:1/-1}
+.product img{width:100%;max-width:360px;aspect-ratio:1/1;object-fit:cover;border-radius:8px}
+
+.price{margin-top:18px;font-family:'Playfair Display',serif;font-size:26px;text-align:center}
+.price span{display:block;font-size:14px;color:var(--ink-muted)}
+
+.availability{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:420px;margin-inline:auto}
+.availability span{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.availability strong{font-size:26px;color:var(--accent)}
+
+.bean-btn{margin:36px auto 0;padding:0 56px;height:64px;border-radius:999px;background:var(--ink);color:var(--parchment);font-size:13px;letter-spacing:.28em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s}
+.bean-btn:hover{background:var(--accent);color:#12100E}
+
+.cart{position:fixed;top:0;right:0;height:100vh;width:100vw;max-width:420px;background:var(--parchment-soft);transform:translateX(100%);transition:transform .45s cubic-bezier(.4,0,.2,1);z-index:20;padding:20px 18px 96px;overflow-y:auto}
+.cart.active{transform:translateX(0)}
+.cart-header{display:flex;justify-content:space-between;align-items:center}
+.close-cart{font-size:22px;cursor:pointer}
+.cart-item{display:flex;justify-content:space-between;margin-top:18px}
+.cart-total{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.checkout-btn{margin-top:14px;padding:14px;border-radius:999px;background:var(--ink);color:var(--parchment);text-align:center;font-size:11px;letter-spacing:.2em;cursor:pointer}
+.checkout-btn:hover{background:var(--accent);color:#12100E}
+
+footer{padding:56px 18px;border-top:1px solid var(--line);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted);display:grid;gap:24px;text-align:center}
+
+@media(max-width:600px){
+  section{padding:56px 16px}
+  .product{grid-template-columns:1fr}
+  nav{justify-content:space-between;padding:12px 14px}
+  nav .nav-left a{display:none}
+  nav a{font-size:9px;letter-spacing:.12em}
+  .nav-buy{padding:8px 14px;font-size:9px}
+}
+  nav{justify-content:space-between;padding:12px 14px}
+  nav a{font-size:9px;letter-spacing:.12em}
+  nav .nav-left a{display:none}
+  .nav-buy{padding:8px 14px;font-size:9px}
+}
+  nav a{
+    font-size:9px;
+    letter-spacing:.12em;
+  }
+  nav a:not(.nav-buy):not(:last-child){
+    display:none;
+  }
+  .nav-buy{
+    padding:8px 14px;
+    font-size:9px;
+  }
+}
+  .product{grid-template-columns:1fr}
+
+  /* MOBILE HEADER STRIP IMPROVEMENT */
+  nav{
+    justify-content:space-between;
+    padding:12px 14px;
+  }
+  nav a{
+    font-size:9px;
+    letter-spacing:.12em;
+  }
+  nav a:not(:last-child){
+    display:none; /* keep cart visible, reduce clutter */
+  }
+  nav a:last-child{
+    display:inline-block;
+    padding:8px 14px;
+    border:1px solid rgba(140,106,61,.35);
+    border-radius:999px;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="#home">Home</a>
+    <a href="#cafe">Café Ambré</a>
+    <a href="#craft">Craft</a>
+    <a href="#edition">Edition</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <a href="javascript:void(0)" class="nav-buy" onclick="scrollToBuy()">Buy now</a>
+    <a href="javascript:void(0)" onclick="openCart()">Cart (<span id="count">0</span>)</a>
+  </div>
+</nav>
+
+<section id="home" class="hero">
+  <div>
+    <h1>House of Amodhe</h1>
+    <p>A perfume house devoted to restraint, time, and quiet intimacy.</p>
+    <p style="font-size:14px">Limited monthly releases. Crafted in small batches.</p>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="cafe">
+  <h2>Café Ambré</h2>
+  <div class="product">
+    <img src="https://cpimg.tistatic.com/08099399/s/4/perfume-bottle-manufacturer-in-mangalore.jpeg" alt="Café Ambré bottle detail" />
+    <img src="cafe-ambre.png" alt="Café Ambré perfume" />
+    <div>
+      <p>Café Ambré is an extrait de parfum composed as a slow, deliberate study of warmth. It is built around roasted coffee beans that feel dark, dry, and gently bitter rather than sweet. The opening is intentionally restrained, avoiding brightness or sharp contrasts.</p>
+      <p>As the fragrance settles, warm amber begins to soften the coffee, adding depth and a quiet resinous glow. The composition stays close to the skin, evolving gradually instead of projecting loudly. There is no rush, no dramatic shift, only a steady unfolding.</p>
+      <p>This fragrance is designed for time rather than attention. Café Ambré does not announce itself. It lingers softly, becoming part of the wearer rather than the room.</p>
+      <div class="price">₹ 5,999<span>$ 72 USD</span></div>
+      <div class="availability">
+        <div><span>Monthly</span><strong id="monthlyLimit">20</strong></div>
+        <div><span>Sold</span><strong id="soldCount">7</strong></div>
+        <div><span>Left</span><strong id="leftCount">13</strong></div>
+      </div>
+      <div class="bean-btn" id="buyBtn" onclick="addToCart()">Buy now</div>
+      <div class="bean-btn" id="prebookBtn" style="display:none" onclick="openPrebook()">Pre book next batch</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="craft">
+  <h2>Craft and Time</h2>
+  <p>At House of Amodhe, time is treated as a material rather than a constraint. Each composition is allowed to rest, evolve, and mature before it is considered complete.</p>
+  <p>We do not accelerate formulas to meet launch schedules or seasonal demands. Maturation is a fundamental part of our process, allowing rough edges to soften and the fragrance to settle into balance.</p>
+  <p>This approach results in compositions that feel calm, integrated, and natural on the skin. Nothing is rushed. Nothing is forced.</p>
+</section>
+<div class="section-divider"></div>
+<section id="edition">
+  <h2>Edition Statement</h2>
+  <p>Café Ambré is released once every month in a strictly limited edition of twenty bottles. When the allocation is complete, the fragrance is not reproduced until the next cycle.</p>
+  <p>This structure is intentional. Limitation allows attention to remain on quality, consistency, and involvement at every stage of production.</p>
+  <p>Scarcity is not used as a marketing device, but as a practical framework that protects care and process.</p>
+</section>
+<div class="section-divider"></div>
+<section id="faq">
+  <h2>Quiet Questions</h2>
+  <p><strong>Is Café Ambré gendered?</strong><br/>No. Café Ambré is composed without gender in mind. It responds to skin chemistry rather than identity.</p>
+  <p><strong>How long does it last?</strong><br/>As an extrait de parfum, it develops slowly and remains present on the skin for many hours without becoming overwhelming.</p>
+  <p><strong>Is it available year round?</strong><br/>No. Café Ambré is released once per month in limited quantities. Once a batch is sold out, the next release must be awaited.</p>
+</section>
+
+<footer id="contact">
+  <div>HOUSE OF AMODHÈ<br><br>Manufactured and marketed by:<br>Shri Shubh Laxmi Scales<br>GST: 08AAMPD5461E1ZT</div>
+  <div>India<br>amodheperfumes@gmail.com<br>www.amodhe.co.in<br>Instagram @amodheperfumes</div>
+  <div>© 2025 House of Amodhè<br>All rights reserved.</div>
+</footer>
+
+<div class="cart" id="cart">
+  <div class="cart-header">
+    <h2>Cart</h2>
+    <div class="close-cart" onclick="closeCart()">×</div>
+  </div>
+
+  <div style="margin-top:10px;font-size:11px;line-height:1.6;color:var(--ink-muted)">
+    Manufactured and marketed by:<br>
+    Shri Shubh Laxmi Scales<br>
+    GST: 08AAMPD5461E1ZT<br>
+    <span style="opacity:.75">GST included in ₹ 5,999</span>
+  </div>
+
+  <div id="cartItems"></div>
+  <div class="cart-total" id="cartTotal"></div>
+
+  <div class="checkout-btn" onclick="checkoutIndia()">Checkout India</div>
+  <div class="checkout-btn" onclick="checkoutInternational()">Checkout International</div>
+</div>
+
+<script>
+const MONTHLY_LIMIT = 20;
+let sold = 7;
+const PRICE = 5999;
+const INTL_PRODUCT_USD = 72;
+const INTL_DELIVERY_USD = 48;
+const INTL_TOTAL_USD = 120;
+let cart = [];
+
+function openCart(){document.getElementById('cart').classList.add('active')}
+function closeCart(){document.getElementById('cart').classList.remove('active')}
+
+function isSoldOut(){return sold >= MONTHLY_LIMIT}
+
+function toggleSoldOutUI(){
+  document.getElementById('buyBtn').style.display='none';
+  document.getElementById('prebookBtn').style.display='flex';
+}
+
+function updateAvailabilityUI(){
+  const left = Math.max(MONTHLY_LIMIT - sold, 0);
+  document.getElementById('soldCount').innerText = sold;
+  document.getElementById('leftCount').innerText = left;
+  if(left === 0){toggleSoldOutUI()}
+}
+
+function addToCart(){
+  if(isSoldOut()){toggleSoldOutUI();return}
+  if(cart.length>=2){alert('Maximum 2 bottles per customer');openCart();return}
+  cart.push('Café Ambré');
+  renderCart();openCart();
+}
+
+function renderCart(){
+  document.getElementById('count').innerText = cart.length;
+  const items = document.getElementById('cartItems');
+  items.innerHTML='';
+  cart.forEach(()=>{
+    const d=document.createElement('div');
+    d.className='cart-item';
+    d.innerHTML=`<span>Café Ambré</span><span>₹ ${PRICE}</span>`;
+    items.appendChild(d);
+  });
+  document.getElementById('cartTotal').innerHTML = cart.length ? (
+    `<strong>India</strong><br>Total: ₹ ${PRICE*cart.length}<br><span style='opacity:.7'>GST included</span><br><br>`+
+    `<strong>International</strong><br>Product: $ ${INTL_PRODUCT_USD*cart.length}<br>`+
+    `Delivery: $ ${INTL_DELIVERY_USD*cart.length}<br>`+
+    `<strong>Total: $ ${INTL_TOTAL_USD*cart.length}</strong>`
+  ) : '';
+}
+
+function scrollToBuy(){
+  const el = document.getElementById('buyBtn') || document.getElementById('prebookBtn');
+  if(el){el.scrollIntoView({behavior:'smooth', block:'center'});}
+}
+
+function openPrebook(){alert('Pre-booking for next batch. Collect email here.')}
+function checkoutIndia(){if(cart.length===0){alert('Your cart is empty');return}alert('India checkout initiated.')}
+function checkoutInternational(){if(cart.length===0){alert('Your cart is empty');return}alert('International checkout initiated.')}
+
+document.addEventListener('DOMContentLoaded', updateAvailabilityUI);
+</script>
+
+</body>
+</html>
